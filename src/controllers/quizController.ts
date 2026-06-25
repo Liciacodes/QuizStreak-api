@@ -6,9 +6,8 @@ import { AuthRequest } from "../middleware/authMiddleware";
 
 const getTodayDateOnly = (): Date => {
     const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), now.getDate())
-
-}
+    return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  };
 
 export const getTodayQuiz = async (req: AuthRequest, res:Response) => {
     try {
@@ -60,7 +59,7 @@ export const getTodayQuiz = async (req: AuthRequest, res:Response) => {
         })
     } catch (error) {
         console.error(error)
-        res.status(500).json({ error: 'SOmething went wrong'})
+        res.status(500).json({ error: 'Something went wrong'})
     }
 }
 
@@ -131,7 +130,7 @@ const calculateStreak = async (userId: string): Promise<number> => {
 
     for (const attempt of attempts) {
         const attemptDate = new Date(attempt.date)
-
+    
         if (attemptDate.getTime() !== expectedDate.getTime()) break;
         if (!attempt.isCorrect) break;
         streak++;
